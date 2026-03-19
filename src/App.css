@@ -1,0 +1,16 @@
+.layout {
+  display: flex;
+}
+
+/* parte direita */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* header no topo */
+.content {
+  flex: 1;
+  padding: 20px;
+}
