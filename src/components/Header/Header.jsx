@@ -6,15 +6,16 @@ const Header = () => {
 <>
 <header className='header'>
     <div className="logo">
+        <span>LOGO</span>
+    </div >
 
-    </div>
+ <div className="header_group"> 
         <div className="header_search">
-            <span>Pesquisar</span>
+            <input type="text" placeholder='Pesquisar'/>
             <i className='pi pi-search'></i>
         </div>
 
-        <div className="header_group">
-            <div className='header_notification'>
+        <div className='header_notification'>
             <i className='pi pi-bell'></i>
         </div>
 
@@ -22,8 +23,7 @@ const Header = () => {
             <i className="pi pi-user"></i>
             <span>Usuário</span>
         </div>
-
-    </div>
+</div>
 </header>
 </>
   )

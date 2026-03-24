@@ -18,11 +18,8 @@ function App() {
 
       <div className="main">
         <Header />
-        <div className="content">
-      
         </div>
       </div>
-    </div>
     </>
   )
 }
