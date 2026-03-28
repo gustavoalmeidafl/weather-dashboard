@@ -12,7 +12,7 @@ const Header = () => {
  <div className="header_group"> 
         <div className="header_search">
             <input type="text" placeholder='Pesquisar'/>
-            <i className='pi pi-search'></i>
+            <i className='pi pi-search'></i>    
         </div>
 
         <div className='header_notification'>
