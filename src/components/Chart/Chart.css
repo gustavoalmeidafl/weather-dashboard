@@ -6,12 +6,12 @@
   text-decoration: none;
 }
 
-.day {
+.day, .chart_week {
   border: 1px white solid;
   border-radius: 15px;
   padding: 8px;
-  width: 300px;
-
+  width: 400px;
+  margin: 10px;
 }
 
 .day .icon_loc {
@@ -24,10 +24,35 @@
   margin-left: 5px;
 }
 .text_weather {
-  margin: 7px;
+  margin: 15px;
 }
 .top_row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.high_low{
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  font-size: 11px;
+}
+.day_hours {
+display: flex;
+justify-content: space-between;
+}
+.hours{
+  border: white 1px solid;
+  padding:0 0 100px;
+  margin: 3px;
+  border-radius: 50px;
+  padding: 5px 0 100px;
+}
+.tomorrow{
+  border: 1px solid white;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 10px;
+  justify-content: space-between;
+  display: flex;
 }
