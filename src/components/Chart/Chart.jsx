@@ -5,71 +5,85 @@ import {
   RadialBar,
   Tooltip
 } from "recharts";
+import HighlightCard from './test';
 
 const Chart = () => {
   return (
     <div>
       
-      <div className="group_day_week">
-        <div className="day">
-          <div className="top_row">
-            <div className="icon_loc">
-              <i className='pi pi-map-marker'></i>
-              <span>Localização</span>
-            </div>
+      <div className="dashboard">
 
-            <div className="converter">
-              <span>F</span><span>C</span>
-            </div>
-          </div>
+  <div className="left">
 
-          <div className="text_weather">
-            <h2>Clima</h2>
-            <span>Agora</span>
-          </div>
-
-          <h1>24</h1>
-
-          <div className="high_low">  
-            <span>Sensação termica de:</span>
-            <span>Mais baixa:</span>
-            <span>Mais alta:</span>
-          </div>
+    <div className="day">
+      <div className="top_row">
+        <div className="icon_loc">
+          <i className='pi pi-map-marker'></i>
+          <span>Localização</span>
         </div>
 
-        <div className="chart_week">
-          <h2>Hoje/Semana</h2>
-
-          <div className="day_hours">
-            <div className="hours"><span>8h</span></div>
-            <div className="hours"><span>10h</span></div>
-            <div className="hours"><span>12h</span></div>
-            <div className="hours"><span>15h</span></div>
-            <div className="hours"><span>Agora</span></div>
-          </div>
-
-          <div className="tomorrow">
-            <span>Tomorrow</span>
-            <div className="tomorrow_temp"></div>
-            <div><img src="" alt="a" /></div>
-          </div>
+        <div className="converter">
+          <span>F</span>
+          <span>C</span>
         </div>
       </div>
 
-   
-      <div className="group_highlight_cities">
-        <div className="highlight">
-          <h2>Destaques</h2>
-            <RadialBarChart width={200} height={200} data={[{ name: "UV", value: 70 }]}>
-             <RadialBar dataKey="value" />
-                <Tooltip />
-              </RadialBarChart>
-        </div>
-        <div className="cities">
-          
+      <div className="text_weather">
+        <h2>Clima</h2>
+        <span>Agora</span>
+      </div>
+
+      <h1 className="temp">24°</h1>
+
+      <div className="high_low">
+        <span>Min: 20°</span>
+        <span>Max: 28°</span>
+      </div>
+    </div>
+
+    <div className="chart_week">
+      <h2>Hoje</h2>
+
+      <div className="day_hours">
+        <div className="hour">8h</div>
+        <div className="hour">10h</div>
+        <div className="hour">12h</div>
+        <div className="hour">15h</div>
+        <div className="hour active">Agora</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div className="right">
+
+    <div className="highlight">
+      <h2>Destaques</h2>
+
+      <div className="highlight-grid">
+        <HighlightCard title="Chuva" value={70} unit="%" />
+        <HighlightCard title="Vento" value={15} unit="km/h" />
+        <HighlightCard title="Umidade" value={60} unit="%" />
+        <HighlightCard title="UV" value={5} />
+      </div>
+    </div>
+
+    <div className="cities">
+      <h2>Cidades</h2>
+
+      <div className="city">
+        <span className="temp">20°</span>
+        <div>
+          <span>Fortaleza</span>
+          <span>Ensolarado</span>
         </div>
       </div>
 
+    </div>
+
+  </div>
+
+</div>
     </div>
   );
 }
