@@ -1,16 +1,25 @@
-import React from 'react'
-import './Dashboard.css'
-import Sidebar from '../components/Sidebar/sidebar'
-import Chart from '../components/Chart/Chart'
+import React, { useEffect, useState } from 'react'
+import './Dashboard.css';
+import Chart from '../components/Chart/Chart';
+import { getWeatherByCity } from "../services/api";
 
 const Dashboard = () => {
+  const [weather, setWeather] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getWeatherByCity("Fortaleza");
+      setWeather(data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div>
-      <div className="charts">
-        <div><Chart/></div>
-      </div>
+    <div className="charts">
+      <Chart weather={weather} />
     </div>
   )
 }
 
-export default Dashboard
+export default Dashboard;
