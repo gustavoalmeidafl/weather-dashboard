@@ -5,3 +5,31 @@
   list-style: none;
   text-decoration: none;
 }
+
+.search-form {
+  position: relative;
+}
+
+.error-message {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: #ff4d4f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.search-input {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-left: 35px;
+}
+
+.search-input.error {
+  border: 2px solid #ff4d4f;
+}
+button { 
+margin: 0 0 5px 5px;
+}

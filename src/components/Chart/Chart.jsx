@@ -1,27 +1,30 @@
 import React from 'react'
 import './Chart.css'
 import HighlightCard from '../HighlightCard/HighlightCard'
-import { useEffect, useState } from "react";
-import { getWeatherByCity } from "../services/api";
+import { weatherTranslations } from "../../utils/weatherTranslations.js";
+
 
 
 
 const Chart = ({ weather }) => {
+  if (!weather) return <p>Carregando...</p>;
 
-  if (!weather) {
-    return <p>Carregando...</p>;
-  }
+  const weatherMain = weather.weather[0].main;
+  const translated = weatherTranslations[weatherMain] || weatherMain;
+
+  const condition = weather?.weather?.[0]?.main;
+  const icon = weather?.weather?.[0]?.icon;
 
   return (
-
     <div className="dashboard">
 
       <div className="dashboard-left">
-      <div className="current-weather">
+
+        <div className="current-weather">
           <div className="weather-header">
             <div className="location">
               <i className='pi pi-map-marker'></i>
-              <span>Location</span>
+              <span>{weather.name}</span>
             </div>
 
             <div className="temperature-toggle">
@@ -31,39 +34,58 @@ const Chart = ({ weather }) => {
           </div>
 
           <div className="weather-info">
-            <h2>Weather</h2>
-            <span>Now</span>
+            <h2>{translated}</h2>
+            <span>Agora</span>
           </div>
 
-          <h1 className="temperature">24°</h1>
+          <h1 className="temperature">
+            {Math.round(weather.main.temp)}°
+          </h1>
 
           <div className="temperature-range">
-            <span>Min: 20°</span>
-            <span>Max: 28°</span>
+            <span>Min: {Math.round(weather.main.temp_min)}°</span>
+            <span>Max: {Math.round(weather.main.temp_max)}°</span>
           </div>
         </div>
 
-      
         <div className="weekly-forecast">
-          <h2>Today</h2>
+          <h2>Hoje</h2>
 
           <div className="hour-list">
-            <div className="hour-card">8h</div>
-            <div className="hour-card">10h</div>
-            <div className="hour-card">12h</div>
-            <div className="hour-card">15h</div>
-            <div className="hour-card active">Now</div>
+   {nextHours?.map((item, index) => {
+    const hour = item.dt_txt.split(" ")[1].slice(0, 5);
+    const temp = Math.round(item.main.temp);
+    const icon = item.weather[0].icon;
 
+    return (
+      <div key={index} className="hour-card">
+        <span>{hour}</span>
+
+        <img
+          src={`https://openweathermap.org/img/wn/${icon}.png`}
+          alt="icon"
+        />
+
+        <span>{temp}°</span>
+      </div>
+    );
+  })}
           </div>
 
           <div className="tomorrow-card">
             <div className="tomorrow-info">
-              <span>Tomorrow</span>
-              <span>Storm</span>
+              <span>Amanhã</span>
+              <span>{translated}</span>
             </div>
 
-            <span className="tomorrow-temp">23°</span>
-            <img src="" alt="weather icon" className="weather-icon" />
+            <span className="tomorrow-temp">
+              {Math.round(weather.main.temp)}°
+            </span>
+
+            <img 
+              src={`https://openweathermap.org/img/wn/${icon}@2x.png`} 
+              alt="weather icon"
+            />
           </div>
         </div>
 
@@ -71,43 +93,32 @@ const Chart = ({ weather }) => {
 
       <div className="dashboard-right">
 
-     
         <div className="highlights">
-          <h2>Highlights</h2>
+          <h2>Destaques</h2>
 
           <div className="highlights-grid">
-            <HighlightCard title="Rain" value={70} unit="%" />
-            <HighlightCard title="Wind" value={15} unit="km/h" />
-            <HighlightCard title="Humidity" value={60} unit="%" />
-            <HighlightCard title="UV Index" value={5} />
+            <HighlightCard title="Umidade" value={weather.main.humidity} unit="%" />
+
+            <HighlightCard 
+              title="Vento" 
+              value={(weather.wind.speed * 3.6).toFixed(1)} 
+              unit="km/h" 
+            />
+
+            <HighlightCard title="Pressão" value={weather.main.pressure} unit="hPa" />
+
+            <HighlightCard 
+              title="Sensação" 
+              value={Math.round(weather.main.feels_like)} 
+              unit="°" 
+            />
           </div>
-        </div>
-
-        <div className="cities">
-          <h2>Cities</h2>
-
-          <div className="city-card">
-            <span className="temperature">20°</span>
-            <div>
-              <span>Fortaleza</span>
-              <span>Sunny</span>
-            </div>
-          </div>
-
-          <div className="city-card">
-            <span className="temperature">24°</span>
-            <div>
-              <span>Pacatuba</span>
-              <span>Sunny</span>
-            </div>
-          </div>
-
         </div>
 
       </div>
 
     </div>
-  )
-}
+  );
+};
 
 export default Chart
