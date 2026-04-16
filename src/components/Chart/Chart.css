@@ -38,17 +38,9 @@
 .hour-list {
   display: flex;
   gap: 10px;
+  overflow-x: auto;
 }
 
-.hour-card {
-  background: #2a2a2a;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.hour-card.active {
-  background: #4f7cff;
-}
 
 .tomorrow-card {
   display: flex;

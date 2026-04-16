@@ -2,18 +2,17 @@ import React from 'react'
 import './Chart.css'
 import HighlightCard from '../HighlightCard/HighlightCard'
 import { weatherTranslations } from "../../utils/weatherTranslations.js";
+import HourCard from '../Hourd_Card/Hour_Card.jsx';
 
 
-
-
-const Chart = ({ weather }) => {
+const Chart = ({ weather, forecast }) => {
   if (!weather) return <p>Carregando...</p>;
 
   const weatherMain = weather.weather[0].main;
   const translated = weatherTranslations[weatherMain] || weatherMain;
-
-  const condition = weather?.weather?.[0]?.main;
   const icon = weather?.weather?.[0]?.icon;
+  const tomorrow = forecast?.list?.[8]; 
+  const nextHours = forecast?.list?.slice(0, 8);
 
   return (
     <div className="dashboard">
@@ -51,25 +50,21 @@ const Chart = ({ weather }) => {
         <div className="weekly-forecast">
           <h2>Hoje</h2>
 
-          <div className="hour-list">
-   {nextHours?.map((item, index) => {
-    const hour = item.dt_txt.split(" ")[1].slice(0, 5);
-    const temp = Math.round(item.main.temp);
-    const icon = item.weather[0].icon;
+                <div className="hour-list">
+            {nextHours?.map((item, index) => {
+              const hour = item.dt_txt.split(" ")[1].slice(0, 5);
+              const temp = Math.round(item.main.temp);
+              const icon = item.weather[0].icon;
 
-    return (
-      <div key={index} className="hour-card">
-        <span>{hour}</span>
-
-        <img
-          src={`https://openweathermap.org/img/wn/${icon}.png`}
-          alt="icon"
-        />
-
-        <span>{temp}°</span>
-      </div>
-    );
-  })}
+              return (
+                <HourCard
+                  key={index}
+                  hour={index === 0 ? "Agora" : hour}
+                  temp={temp}
+                  icon={icon}
+                />
+              );
+            })}
           </div>
 
           <div className="tomorrow-card">
@@ -78,14 +73,20 @@ const Chart = ({ weather }) => {
               <span>{translated}</span>
             </div>
 
-            <span className="tomorrow-temp">
-              {Math.round(weather.main.temp)}°
-            </span>
+                        {tomorrow && (
+                <>
+                  <span>{weatherTranslations[tomorrow.weather[0].main]}</span>
 
-            <img 
-              src={`https://openweathermap.org/img/wn/${icon}@2x.png`} 
-              alt="weather icon"
-            />
+                  <span className="tomorrow-temp">
+                    {Math.round(tomorrow.main.temp)}°
+                  </span>
+
+                  <img 
+                    src={`https://openweathermap.org/img/wn/${tomorrow.weather[0].icon}@2x.png`} 
+                    alt="weather icon"
+                  />
+                </>
+              )}
           </div>
         </div>
 
