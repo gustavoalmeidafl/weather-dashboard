@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Chart from "../components/Chart/Chart";
 import { getWeatherByCity, getForecastByCity } from "../services/api";
-import './Dashboard.css' 
+import './Dashboard.css';
 
 const Dashboard = () => {
   const [weather, setWeather] = useState(null);
@@ -12,6 +12,10 @@ const Dashboard = () => {
 
   const [error, setError] = useState(null);
 
+  const [citiesWeather, setCitiesWeather] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  // 🔹 busca principal
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,7 +24,7 @@ const Dashboard = () => {
 
         if (weatherData.cod !== 200) {
           setError("Não encontramos essa cidade.");
-          return; 
+          return;
         }
 
         setWeather(weatherData);
@@ -29,20 +33,42 @@ const Dashboard = () => {
 
       } catch (err) {
         setError("Erro ao buscar dados.");
-        return;
       }
     };
 
     fetchData();
   }, [city]);
 
+  // 🔹 busca cidades secundárias
+  useEffect(() => {
+    const fetchCities = async () => {
+      const results = await Promise.all(
+        cities.map(city => getWeatherByCity(city))
+      );
+
+      setCitiesWeather(results);
+    };
+
+    if (cities.length > 0) {
+      fetchCities();
+    }
+  }, [cities]);
+
+  // 🔹 busca do input
   const handleSearch = (e) => {
     e.preventDefault();
 
     if (!input.trim()) return;
 
-    setCity(input.trim());
+    const cityName = input.trim();
+
+    setCity(cityName);
     setInput("");
+
+    setCities((prev) => {
+      if (prev.includes(cityName)) return prev;
+      return [cityName, ...prev].slice(0, 5);
+    });
   };
 
   return (
@@ -57,11 +83,9 @@ const Dashboard = () => {
           className={`search-input ${error ? "error" : ""}`}
         />
         <button type="submit">Buscar</button>
-
-
       </form>
 
-            {error && (
+      {error && (
         <div className="error-box">
           <span>{error}</span>
           <button onClick={() => setError(null)}>Ok</button>
@@ -69,7 +93,11 @@ const Dashboard = () => {
       )}
 
       {weather && (
-       <Chart weather={weather} forecast={forecast} />
+        <Chart 
+          weather={weather} 
+          forecast={forecast} 
+          citiesWeather={citiesWeather} 
+        />
       )}
 
     </div>

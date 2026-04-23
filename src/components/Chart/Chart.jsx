@@ -5,7 +5,7 @@ import { weatherTranslations } from "../../utils/weatherTranslations.js";
 import HourCard from '../Hourd_Card/Hour_Card.jsx';
 
 
-const Chart = ({ weather, forecast }) => {
+const Chart = ({ weather, forecast, citiesWeather  }) => {
   if (!weather) return <p>Carregando...</p>;
 
   const weatherMain = weather.weather[0].main;
@@ -13,7 +13,7 @@ const Chart = ({ weather, forecast }) => {
   const icon = weather?.weather?.[0]?.icon;
   const tomorrow = forecast?.list?.[8]; 
   const nextHours = forecast?.list?.slice(0, 8);
-
+  
   return (
     <div className="dashboard">
 
@@ -67,27 +67,27 @@ const Chart = ({ weather, forecast }) => {
             })}
           </div>
 
-          <div className="tomorrow-card">
-            <div className="tomorrow-info">
-              <span>Amanhã</span>
-              <span>{translated}</span>
-            </div>
-
-                        {tomorrow && (
-                <>
-                  <span>{weatherTranslations[tomorrow.weather[0].main]}</span>
-
-                  <span className="tomorrow-temp">
-                    {Math.round(tomorrow.main.temp)}°
-                  </span>
-
-                  <img 
-                    src={`https://openweathermap.org/img/wn/${tomorrow.weather[0].icon}@2x.png`} 
-                    alt="weather icon"
-                  />
-                </>
-              )}
+            <div className="tomorrow-card">
+          
+          <div className="tomorrow-info">
+            <span>Amanhã</span>
+            <span>{weatherTranslations[tomorrow?.weather[0]?.main]}</span>
           </div>
+
+          {tomorrow && (
+            <div className="tomorrow-right">
+              <span className="tomorrow-temp">
+                {Math.round(tomorrow.main.temp)}°
+              </span>
+
+              <img 
+                src={`https://openweathermap.org/img/wn/${tomorrow.weather[0].icon}@2x.png`} 
+                alt="weather icon"
+              />
+            </div>
+          )}
+
+</div>
         </div>
 
       </div>
@@ -97,28 +97,23 @@ const Chart = ({ weather, forecast }) => {
         <div className="highlights">
           <h2>Destaques</h2>
 
-          <div className="highlights-grid">
-            <HighlightCard title="Umidade" value={weather.main.humidity} unit="%" />
-
-            <HighlightCard 
-              title="Vento" 
-              value={(weather.wind.speed * 3.6).toFixed(1)} 
-              unit="km/h" 
-            />
-
-            <HighlightCard title="Pressão" value={weather.main.pressure} unit="hPa" />
-
-            <HighlightCard 
-              title="Sensação" 
-              value={Math.round(weather.main.feels_like)} 
-              unit="°" 
-            />
-          </div>
+         
         </div>
+             {citiesWeather?.map((city, index) => (
+      <div key={index} className="city-card">
+        <span className="temperature">
+          {Math.round(city.main.temp)}°
+        </span>
 
+        <div>
+          <span>{city.name}</span>
+          <span>{city.weather[0].main}</span>
+        </div>
       </div>
+    ))}
+    </div>    
+ </div>
 
-    </div>
   );
 };
 

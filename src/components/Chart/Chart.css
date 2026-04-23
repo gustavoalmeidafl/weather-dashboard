@@ -41,29 +41,28 @@
   overflow-x: auto;
 }
 
-
 .tomorrow-card {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background: #2a2a2a;
   padding: 10px;
   border-radius: 10px;
   margin-top: 10px;
 }
 
+.tomorrow-info {
+  display: flex;
+  flex-direction: column;
+}
 
-.highlights-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.tomorrow-right {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-
-.city-card {
-  display: flex;
-  justify-content: space-between;
-  background: #2a2a2a;
-  padding: 10px;
-  border-radius: 10px;
-  margin-top: 10px;
+.tomorrow-temp {
+  font-size: 20px;
+  font-weight: bold;
 }
