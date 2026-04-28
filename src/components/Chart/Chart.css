@@ -6,6 +6,13 @@
   color: white;
 }
 
+.dashboard-left,
+.dashboard-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .current-weather,
 .weekly-forecast,
 .highlights,
@@ -13,9 +20,7 @@
   background: #1e1e1e;
   border-radius: 15px;
   padding: 15px;
-  margin: 15px;
 }
-
 
 .weather-header {
   display: flex;
@@ -30,11 +35,11 @@
   border-radius: 10px;
 }
 
-
 .temperature {
   font-size: 40px;
   margin: 10px 0;
 }
+
 .hour-list {
   display: flex;
   gap: 10px;
@@ -65,4 +70,19 @@
 .tomorrow-temp {
   font-size: 20px;
   font-weight: bold;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.city-card {
+  display: flex;
+  justify-content: space-between;
+  background: #2a2a2a;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
 }

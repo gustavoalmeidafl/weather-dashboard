@@ -1,120 +1,41 @@
-import React from 'react'
-import './Chart.css'
-import HighlightCard from '../HighlightCard/HighlightCard'
+import React from 'react';
+import './Chart.css';
+import HighlightCard from '../HighlightCard/HighlightCard';
 import { weatherTranslations } from "../../utils/weatherTranslations.js";
 import HourCard from '../Hourd_Card/Hour_Card.jsx';
+import CurrentWeather from "../CurrentWeather/CurrentWeather";
+import Highlights from "../Highlights/Highlights";
+import Cities from "../Cities/Cities";
+import ForecastSection from "../ForecastSection/ForecastSection";
 
-
-const Chart = ({ weather, forecast, citiesWeather  }) => {
+const Chart = ({ weather, forecast, citiesWeather }) => {
   if (!weather) return <p>Carregando...</p>;
+  const tomorrow = forecast?.list?.[8];
+  const nextHours = forecast?.list?.slice(0, 8) || [];
 
-  const weatherMain = weather.weather[0].main;
-  const translated = weatherTranslations[weatherMain] || weatherMain;
-  const icon = weather?.weather?.[0]?.icon;
-  const tomorrow = forecast?.list?.[8]; 
-  const nextHours = forecast?.list?.slice(0, 8);
-  
   return (
     <div className="dashboard">
 
+      {/* LEFT */}
       <div className="dashboard-left">
 
-        <div className="current-weather">
-          <div className="weather-header">
-            <div className="location">
-              <i className='pi pi-map-marker'></i>
-              <span>{weather.name}</span>
-            </div>
+      <CurrentWeather weather={weather} />
 
-            <div className="temperature-toggle">
-              <span>F</span>
-              <span>C</span>
-            </div>
-          </div>
-
-          <div className="weather-info">
-            <h2>{translated}</h2>
-            <span>Agora</span>
-          </div>
-
-          <h1 className="temperature">
-            {Math.round(weather.main.temp)}°
-          </h1>
-
-          <div className="temperature-range">
-            <span>Min: {Math.round(weather.main.temp_min)}°</span>
-            <span>Max: {Math.round(weather.main.temp_max)}°</span>
-          </div>
-        </div>
-
-        <div className="weekly-forecast">
-          <h2>Hoje</h2>
-
-                <div className="hour-list">
-            {nextHours?.map((item, index) => {
-              const hour = item.dt_txt.split(" ")[1].slice(0, 5);
-              const temp = Math.round(item.main.temp);
-              const icon = item.weather[0].icon;
-
-              return (
-                <HourCard
-                  key={index}
-                  hour={index === 0 ? "Agora" : hour}
-                  temp={temp}
-                  icon={icon}
-                />
-              );
-            })}
-          </div>
-
-            <div className="tomorrow-card">
-          
-          <div className="tomorrow-info">
-            <span>Amanhã</span>
-            <span>{weatherTranslations[tomorrow?.weather[0]?.main]}</span>
-          </div>
-
-          {tomorrow && (
-            <div className="tomorrow-right">
-              <span className="tomorrow-temp">
-                {Math.round(tomorrow.main.temp)}°
-              </span>
-
-              <img 
-                src={`https://openweathermap.org/img/wn/${tomorrow.weather[0].icon}@2x.png`} 
-                alt="weather icon"
-              />
-            </div>
-          )}
-
-</div>
-        </div>
+      <ForecastSection forecast={forecast} />
 
       </div>
 
+      {/* RIGHT */}
       <div className="dashboard-right">
+        
+        <Highlights weather={weather} />
 
-        <div className="highlights">
-          <h2>Destaques</h2>
-
-         
-        </div>
-             {citiesWeather?.map((city, index) => (
-      <div key={index} className="city-card">
-        <span className="temperature">
-          {Math.round(city.main.temp)}°
-        </span>
-
-        <div>
-          <span>{city.name}</span>
-          <span>{city.weather[0].main}</span>
-        </div>
+        <Cities citiesWeather={citiesWeather}/>
+        
       </div>
-    ))}
-    </div>    
- </div>
 
+    </div>
   );
 };
 
-export default Chart
+export default Chart;

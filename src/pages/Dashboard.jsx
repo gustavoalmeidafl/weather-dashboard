@@ -15,17 +15,19 @@ const Dashboard = () => {
   const [citiesWeather, setCitiesWeather] = useState([]);
   const [cities, setCities] = useState([]);
 
-  // 🔹 busca principal
   useEffect(() => {
     const fetchData = async () => {
       try {
         const weatherData = await getWeatherByCity(city);
-        const forecastData = await getForecastByCity(city);
 
         if (weatherData.cod !== 200) {
           setError("Não encontramos essa cidade.");
+          setWeather(null);
+          setForecast(null);
           return;
         }
+
+        const forecastData = await getForecastByCity(city);
 
         setWeather(weatherData);
         setForecast(forecastData);
@@ -33,20 +35,26 @@ const Dashboard = () => {
 
       } catch (err) {
         setError("Erro ao buscar dados.");
+        setWeather(null);
+        setForecast(null);
       }
     };
 
     fetchData();
   }, [city]);
 
-  // 🔹 busca cidades secundárias
   useEffect(() => {
     const fetchCities = async () => {
-      const results = await Promise.all(
-        cities.map(city => getWeatherByCity(city))
-      );
+      try {
+        const results = await Promise.all(
+          cities.map((city) => getWeatherByCity(city))
+        );
 
-      setCitiesWeather(results);
+        const validCities = results.filter(c => c.cod === 200);
+
+        setCitiesWeather(validCities);
+      } catch {
+      }
     };
 
     if (cities.length > 0) {
@@ -54,7 +62,6 @@ const Dashboard = () => {
     }
   }, [cities]);
 
-  // 🔹 busca do input
   const handleSearch = (e) => {
     e.preventDefault();
 
