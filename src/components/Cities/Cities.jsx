@@ -1,7 +1,8 @@
 import React from "react";
+import  "./Cities.css"
+import { convertTemperature } from "../../utils/temperature";
 
-
-const Cities = ({ citiesWeather }) => {
+const Cities = ({ citiesWeather, unit }) => {
   if (!citiesWeather || citiesWeather.length === 0) return null;
 
   return (
@@ -11,7 +12,7 @@ const Cities = ({ citiesWeather }) => {
       {citiesWeather.map((city, index) => (
         <div key={index} className="city-card">
           <span className="temperature">
-            {Math.round(city.main.temp)}°
+          {Math.round(convertTemperature(city.main.temp, unit))}°
           </span>
 
           <div>

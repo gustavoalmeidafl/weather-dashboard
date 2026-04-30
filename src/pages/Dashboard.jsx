@@ -4,6 +4,8 @@ import { getWeatherByCity, getForecastByCity } from "../services/api";
 import './Dashboard.css';
 
 const Dashboard = () => {
+  const [unit, setUnit] = useState("C");
+
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
 
@@ -14,6 +16,18 @@ const Dashboard = () => {
 
   const [citiesWeather, setCitiesWeather] = useState([]);
   const [cities, setCities] = useState([]);
+  
+  const [citiesWeather, setCitiesWeather] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+    setCities(savedCities);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cities", JSON.stringify(cities));
+  }, [cities]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +57,7 @@ const Dashboard = () => {
     fetchData();
   }, [city]);
 
+ 
   useEffect(() => {
     const fetchCities = async () => {
       try {
@@ -104,6 +119,8 @@ const Dashboard = () => {
           weather={weather} 
           forecast={forecast} 
           citiesWeather={citiesWeather} 
+          unit={unit}
+          setUnit={setUnit}
         />
       )}
 

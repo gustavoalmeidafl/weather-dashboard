@@ -1,11 +1,16 @@
 import React from "react";
 import { weatherTranslations } from "../../utils/weatherTranslations";
+import "./CurrentWeather.css"
+import { convertTemperature } from "../../utils/temperature";
 
-const CurrentWeather = ({ weather }) => {
+const CurrentWeather = ({ weather, unit, setUnit }) => {
   if (!weather) return null;
 
   const weatherMain = weather.weather[0].main;
   const translated = weatherTranslations[weatherMain] || weatherMain;
+  
+  const convertTemp = (temp) =>
+  unit === "C" ? temp : (temp * 9) / 5 + 32;
 
   return (
     <div className="current-weather">
@@ -16,8 +21,19 @@ const CurrentWeather = ({ weather }) => {
         </div>
 
         <div className="temperature-toggle">
-          <span>F</span>
-          <span>C</span>
+         <span
+            className={unit === "F" ? "active" : ""}
+            onClick={() => setUnit("F")}
+          >
+            F
+          </span>
+
+          <span
+            className={unit === "C" ? "active" : ""}
+            onClick={() => setUnit("C")}
+          >
+            C
+          </span>
         </div>
       </div>
 
@@ -27,13 +43,12 @@ const CurrentWeather = ({ weather }) => {
       </div>
 
       <h1 className="temperature">
-        {Math.round(weather.main.temp)}°
+     {Math.round(convertTemperature(weather.main.temp, unit))}°
       </h1>
-
-      <div className="temperature-range">
-        <span>Min: {Math.round(weather.main.temp_min)}°</span>
-        <span>Max: {Math.round(weather.main.temp_max)}°</span>
-      </div>
+        <div className="temperature-range">
+          <span>Min: {Math.round(convertTemperature(weather.main.temp_min, unit))}°</span>
+          <span>Max: {Math.round(convertTemperature(weather.main.temp_max, unit))}°</span>
+        </div>
     </div>
   );
 };

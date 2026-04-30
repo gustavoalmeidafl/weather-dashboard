@@ -1,8 +1,10 @@
 import React from "react";
 import HourCard from "../Hourd_Card/Hour_Card";
 import { weatherTranslations } from "../../utils/weatherTranslations";
+import "../ForecastSection/ForecastSection.css"
+import { convertTemperature } from "../../utils/temperature";
 
-const ForecastSection = ({forecast}) => {
+const ForecastSection = ({ forecast, unit }) => {
   if (!forecast) return null;
  const tomorrow = forecast?.list?.[8];
 const nextHours = forecast?.list?.slice(0, 8) || [];
@@ -13,7 +15,7 @@ const nextHours = forecast?.list?.slice(0, 8) || [];
           <div className="hour-list">
             {nextHours.map((item, index) => {
               const hour = item.dt_txt.split(" ")[1].slice(0, 5);
-              const temp = Math.round(item.main.temp);
+              const temp = Math.round(convertTemperature(item.main.temp, unit));
               const icon = item.weather[0].icon;
 
               return (
@@ -40,7 +42,7 @@ const nextHours = forecast?.list?.slice(0, 8) || [];
             {tomorrow && (
               <div className="tomorrow-right">
                 <span className="tomorrow-temp">
-                  {Math.round(tomorrow.main.temp)}°
+                  {Math.round(convertTemperature(tomorrow.main.temp, unit))}°
                 </span>
 
                 <img
