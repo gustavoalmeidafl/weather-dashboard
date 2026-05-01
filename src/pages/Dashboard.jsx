@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Chart from "../components/Chart/Chart";
 import { getWeatherByCity, getForecastByCity } from "../services/api";
-import './Dashboard.css';
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const [unit, setUnit] = useState("C");
@@ -14,9 +14,6 @@ const Dashboard = () => {
 
   const [error, setError] = useState(null);
 
-  const [citiesWeather, setCitiesWeather] = useState([]);
-  const [cities, setCities] = useState([]);
-  
   const [citiesWeather, setCitiesWeather] = useState([]);
   const [cities, setCities] = useState([]);
 
@@ -32,70 +29,87 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const weatherData = await getWeatherByCity(city);
+      const weatherData = await getWeatherByCity(city);
 
-        if (weatherData.cod !== 200) {
-          setError("Não encontramos essa cidade.");
-          setWeather(null);
-          setForecast(null);
-          return;
-        }
-
-        const forecastData = await getForecastByCity(city);
-
-        setWeather(weatherData);
-        setForecast(forecastData);
-        setError(null);
-
-      } catch (err) {
-        setError("Erro ao buscar dados.");
+      if (weatherData.cod !== 200) {
+        setError("Não encontramos essa cidade.");
         setWeather(null);
         setForecast(null);
+        return;
       }
+
+      const forecastData = await getForecastByCity(city);
+
+      setWeather(weatherData);
+      setForecast(forecastData);
+      setError(null);
+
+    } catch (err) {
+      setError("Erro ao buscar dados.");
+      setWeather(null);
+      setForecast(null);
+    }
     };
 
     fetchData();
   }, [city]);
 
- 
   useEffect(() => {
     const fetchCities = async () => {
       try {
         const results = await Promise.all(
-          cities.map((city) => getWeatherByCity(city))
+          cities.map((cityName) => getWeatherByCity(cityName))
         );
 
-        const validCities = results.filter(c => c.cod === 200);
+        const validCities = results.filter(
+          (cityData) => cityData.cod === 200
+        );
 
         setCitiesWeather(validCities);
-      } catch {
+
+      } catch (err) {
+        console.error("Erro ao buscar cidades salvas:", err);
       }
     };
 
     if (cities.length > 0) {
       fetchCities();
+    } else {
+      setCitiesWeather([]);
     }
   }, [cities]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = async (e) => {
+  e.preventDefault();
 
-    if (!input.trim()) return;
+  if (!input.trim()) return;
 
-    const cityName = input.trim();
+  const cityName = input.trim();
+
+  try {
+    const weatherData = await getWeatherByCity(cityName);
+
+    if (weatherData.cod !== 200) {
+      setError("Não encontramos essa cidade.");
+      return;
+    }
 
     setCity(cityName);
     setInput("");
+    setError(null);
 
     setCities((prev) => {
       if (prev.includes(cityName)) return prev;
       return [cityName, ...prev].slice(0, 5);
     });
-  };
+
+  } catch (err) {
+    setError("Erro ao buscar dados.");
+  }
+};
 
   return (
     <div className="dashboard-page">
-
       <form onSubmit={handleSearch} className="search-form">
         <input
           type="text"
@@ -115,15 +129,14 @@ const Dashboard = () => {
       )}
 
       {weather && (
-        <Chart 
-          weather={weather} 
-          forecast={forecast} 
-          citiesWeather={citiesWeather} 
+        <Chart
+          weather={weather}
+          forecast={forecast}
+          citiesWeather={citiesWeather}
           unit={unit}
           setUnit={setUnit}
         />
       )}
-
     </div>
   );
 };

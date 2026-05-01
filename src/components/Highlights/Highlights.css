@@ -1,0 +1,16 @@
+.highlights {
+  background: #1e1e1e;
+  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+}
+
+.highlights h2 {
+  margin-bottom: 20px;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}

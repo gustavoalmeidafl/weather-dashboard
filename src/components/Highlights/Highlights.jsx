@@ -1,5 +1,6 @@
 import React from "react";
 import HighlightCard from "../HighlightCard/HighlightCard";
+import './Highlights.css'
 
 const Highlights = ({ weather }) => {
   if (!weather) return null;

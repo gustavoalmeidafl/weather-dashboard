@@ -1,3 +1,5 @@
+import './HighlightCard.css'
+
 const HighlightCard = ({ title, value, unit }) => {
   return (
     <div className="highlight-card">
