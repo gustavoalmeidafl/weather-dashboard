@@ -28,4 +28,5 @@ Dashboard climático responsivo desenvolvido com React.
 * Persistência local
 * Tratamento de erros
 
-https://github.com/gustavoalmeidafl/weather-dashboard/blob/main/Captura%20de%20tela%202026-05-01%20204734.png?raw=true
+
+![Projeto](https://github.com/gustavoalmeidafl/weather-dashboard/blob/main/Captura%20de%20tela%202026-05-01%20204734.png?raw=true)
